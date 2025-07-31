@@ -12,7 +12,7 @@
 
 ## 1. Инструкция по локальной настройке проекта
 
-### 1.1. Реализовываем клонирование репозитория 
+### 1.1. Реализация клонирования репозитория
 
 - Командная строка:
 
@@ -22,7 +22,7 @@ git clone https://github.com/maxter9595/MyCloud-Backend.git MyCloud/backend && g
 
 ![](./assets/motions/2-local-setup/2-1.gif)
 
-### 1.2. Создаем БД в СУБД PostgreSQL. Настраиваем соединение к БД
+### 1.2. Создание БД в СУБД PostgreSQL. Настройка соединения к БД
 
 - Командная строка:
 
@@ -45,7 +45,7 @@ CREATE DATABASE my_database;
 ![](./assets/motions/2-local-setup/2-2.gif)
 
 
-### 1.3. Настраиваем переменные окружения для бэкенда и фронтенда
+### 1.3. Настройка переменных окружения для бэкенда и фронтенда
 
 - Переменные окружения бэкенда (можно скопировать из .env_example):
 
@@ -83,7 +83,6 @@ REACT_APP_API_BASE_URL=http://localhost:8000/api
 
 ![](./assets/motions/2-local-setup/2-3.gif)
 
-
 ### 1.4. Запуск бэкенда
 
 - Командная строка:
@@ -119,13 +118,13 @@ npm start
 
 ![](./assets/motions/2-local-setup/2-5.gif)
 
-## 2. Инструкция по деплою веб-приложения: Backend
+## 2. Инструкция по деплою веб-приложения: backend
 
-### 2.1. Заказываем облачные сервера в cloud.reg.ru
+### 2.1. Заказ виртуальных серверов в cloud.reg.ru
 
-* Ссылка для заказа облачного сервера: [https://cloud.reg.ru/panel/](https://cloud.reg.ru/panel/)
+* Ссылка для заказа виртуальных серверов: [https://cloud.reg.ru/panel/](https://cloud.reg.ru/panel/)
 
-* Параметры облачных серверов:
+* Параметры виртуальных серверов:
 
 ```
 Образ: Ubuntu
@@ -138,7 +137,7 @@ npm start
 
 ![](./assets/motions/3-backend-deploy/3-1.gif)
 
-* После покупки сервера на почту пришлют:
+* После покупки серверов пришлют на почту:
 
 ```
 IP-адрес (пример - 95.163.221.31)
@@ -146,14 +145,14 @@ IP-адрес (пример - 95.163.221.31)
 Пароль (пример - 5eHxbH8H5l8hD2kW, пароль не настоящий)
 ```
 
-* В текущей ситуации будет два облачных сервера:
+* В текущей ситуации будет два виртуальных сервера:
 
 ```
 95.163.221.31 - Backend
 95.163.220.194 - Frontend
 ```
 
-### 2.2. Подключаемся к серверу по ssh через Git Bash
+### 2.2. Подклюение к серверу по ssh через Git Bash
 
 - Командная строка:
 
@@ -168,7 +167,7 @@ sudo usermod -a -G my_user www-data
 
 ![](./assets/motions/3-backend-deploy/3-2.gif)
 
-### 2.3. Настраиваем и активируем брандмауэр UFW (Uncomplicated Firewall)
+### 2.3. Настройка и активизация брандмауэра UFW (Uncomplicated Firewall)
 
 - Командная строка:
 
@@ -186,7 +185,7 @@ ufw status
 ![](./assets/motions/3-backend-deploy/3-3.gif)
 
 
-### 2.4. Переключаемся на пользователя Linux и устанавливаем необходимые пакеты
+### 2.4. Переключение на пользователя Linux и устанавка необходимых пакетов
 
 - Командная строка:
 
@@ -203,7 +202,7 @@ sudo apt install -y curl wget git nginx python3-pip python3-venv postgresql post
 ![](./assets/motions/3-backend-deploy/3-4.gif)
 
 
-### 2.5. Создаем БД в СУБД PostgreSQL
+### 2.5. Создание БД в СУБД PostgreSQL
 
 - Командная строка:
 
@@ -235,7 +234,7 @@ ALTER ROLE my_user SET timezone TO 'Europe/Moscow';
 ![](./assets/motions/3-backend-deploy/3-5.gif)
 
 
-### 2.6. Настраиваем СУБД PostgreSQL для подключения через Dbeaver
+### 2.6. Настройка СУБД PostgreSQL для подключения к БД через Dbeaver
 
 - Командная строка:
 
@@ -261,10 +260,11 @@ sudo systemctl reload postgresql
 
 ![](./assets/motions/3-backend-deploy/3-6-1.gif)
 
-- Подлючаемся к Dbeaver со следующими данными:
+- Подключение к Dbeaver:
 
 ```
 Хост: 95.163.221.31
+Порт: 5432
 База данных: my_db 
 Пользователь: my_user 
 Пароль: pass
@@ -272,12 +272,12 @@ sudo systemctl reload postgresql
 
 ![](./assets/motions/3-backend-deploy/3-6-2.gif)
 
-### 2.7. Скачиваем проект из GitHub и заходим в папку backend
+### 2.7. Скачивание проекта из GitHub и вход в папку backend
 
-- Выполняем следующее:
+- Командная строка:
 
 ```
-cd ~ # если не находимся на домашней директории пользователя
+cd ~
 git clone https://github.com/maxter9595/MyCloud-Backend.git MyCloud/backend
 cd MyCloud/backend
 
@@ -287,8 +287,8 @@ pip install -r requirements.txt
 pip install gunicorn
 
 sudo nano .env 
-# Добавляем переменные окружения
 
+------------ .env ------------
 # ======================
 # 1. Core Django Settings
 # ======================
@@ -309,15 +309,14 @@ DB_PORT="5432"
 # 3. Security & CORS
 # ======================
 CORS_ALLOWED_ORIGINS="http://95.163.220.194,http://95.163.221.31"
-
-# После добавления переменных окружения выходим из .env 
+------------ .env ------------
 ```
 
 ![](./assets/motions/3-backend-deploy/3-7.gif)
 
-### 2.8. Настраиваем миграции. Собираем статику. Создаем суперпользователя
+### 2.8. Настройка миграции. Сбор статики. Создание суперпользователя
 
-- Донастраиваем содержимое папки backend:
+- Командная строка:
 
 ```
 python manage.py makemigrations accounts
@@ -339,21 +338,21 @@ sudo chmod -R 775 /home/my_user/MyCloud/backend/media/
 python manage.py runserver 0.0.0.0:8000
 ```
 
-- Заходим по ссылке на http://95.163.221.31:8000/admin и проверяем админку Django
+- [http://95.163.221.31:8000/admin](http://95.163.221.31:8000/admin): ссылка для проверки админки в Django после запуска ```python manage.py runserver 0.0.0.0:8000```
 
 ![](./assets/motions/3-backend-deploy/3-8.gif)
 
-### 2.9. Проверяем работу Gunicorn. Настраиваем и запускаем его
+### 2.9. Gunicorn: проверка работы, настройка и запуск
 
-- Реализовываем следующее:
+- Командная строка:
 
 ```
-sudo lsof -i :8000 # Проверяем наличие процессов, занимающих порт 8000. Если пусто - продолжаем
-gunicorn --bind 0.0.0.0:8000 mycloud.wsgi # Проверка работы Gunicorn
+sudo lsof -i :8000
+gunicorn --bind 0.0.0.0:8000 mycloud.wsgi
 
 sudo nano /etc/systemd/system/gunicorn.socket
-# Заполняем gunicorn.socket
 
+-------- gunicorn.socket --------
 [Unit]
 Description=gunicorn socket
 
@@ -362,12 +361,11 @@ ListenStream=/run/gunicorn.sock
 
 [Install]
 WantedBy=sockets.target
-
-# После заполнения выходим из gunicorn.socket
+-------- gunicorn.socket --------
 
 sudo nano /etc/systemd/system/gunicorn.service
-# Заполняем gunicorn.service
 
+-------- gunicorn.service --------
 [Unit]
 Description=Gunicorn daemon
 Requires=gunicorn.socket
@@ -386,8 +384,7 @@ Environment="PYTHONPATH=/home/my_user/MyCloud/backend"
 
 [Install]
 WantedBy=multi-user.target
-
-# После заполнения выходим из gunicorn.service
+-------- gunicorn.service --------
 
 sudo systemctl start gunicorn.socket
 sudo systemctl enable gunicorn.socket
@@ -397,24 +394,23 @@ sudo systemctl status gunicorn.service
 ![](./assets/motions/3-backend-deploy/3-9.gif)
 
 
-### 2.10. Настраиваем и запускаем Проверка работы Gunicorn, его настройка и запуск
+### 2.10. Настройка и запуск Nginx
 
-- Выполняем следующее:
+- Командная строка:
 
 ```
 sudo nano /etc/nginx/nginx.conf 
-# Меняем потенциальный размер файлов в nginx.conf
 
+---------- nginx.conf ----------
 http {
-    client_max_body_size 100M;  # добавляем переменную client_max_body_size в http
-    # ...
+    client_max_body_size 100M;  # добавление client_max_body_size в http
+    ...
 }
-
-# После добавления закрываем nginx.conf 
+---------- nginx.conf ----------
 
 sudo nano /etc/nginx/sites-available/mycloud
-# Заполняем серверные данные
 
+---------- sites-available/mycloud ----------
 server {
     listen 80;
     server_name 95.163.221.31;
@@ -438,26 +434,26 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
-
-# После заполнения закрываем /etc/nginx/sites-available/mycloud
+---------- sites-available/mycloud ----------
 
 sudo ln -s /etc/nginx/sites-available/mycloud /etc/nginx/sites-enabled
 sudo nginx -t
+
 sudo systemctl restart nginx
 sudo systemctl status nginx
 ```
 
 ![](./assets/motions/3-backend-deploy/3-10.gif)
 
-### 2.11. Проверяем запуск админки Django
+### 2.11. Проверка запуска админской панели Django
 
-- Проверяем http://95.163.221.31/admin. Открываем ссылку. Если все ок - продолжаем.
+- [http://95.163.221.31/admin](http://95.163.221.31/admin): ссылка для проверки админки Django после запуска Nginx
 
 ![](./assets/motions/3-backend-deploy/3-11.gif)
 
-## 3. Инструкция по деплою веб-приложения: Frontend
+## 3. Инструкция по деплою веб-приложения: frontend
 
-### 3.1. Подключаемся к серверу по ssh через Git Bash
+### 3.1. Подключение к серверу по ssh через Git Bash
 
 - Командная строка:
 
@@ -472,7 +468,7 @@ sudo usermod -a -G my_user www-data
 
 ![](./assets/motions/4-frontend-deploy/4-1.gif)
 
-### 3.2. Настраиваем и активируем брандмауэр UFW (Uncomplicated Firewall)
+### 3.2. Настройка и активизация брандмауэра UFW (Uncomplicated Firewall)
 
 - Командная строка:
 
@@ -489,7 +485,7 @@ ufw status
 
 ![](./assets/motions/4-frontend-deploy/4-2.gif)
 
-### 3.3. Переключаемся на пользователя Linux и устанавливаем необходимые пакеты
+### 3.3. Переключение на пользователя Linux и установка необходимых пакетов
 
 - Командная строка:
 
@@ -505,9 +501,9 @@ sudo apt install -y curl wget git nginx python3-pip python3-venv postgresql post
 
 ![](./assets/motions/4-frontend-deploy/4-3.gif)
 
-### 3.4. Скачиваем проект из GitHub и заходим в папку frontend. Настраиваем фронтенд
+### 3.4. Скачивание проекта из GitHub и вход в папку проекта. Настройка frontend
 
-- Настраиваем фронтенд:
+- Командная строка:
 
 ```
 cd ~
@@ -515,28 +511,26 @@ git clone https://github.com/maxter9595/MyCloud-Frontend.git MyCloud/frontend
 cd MyCloud/frontend
 
 nano .env
-# Устанавливаем переменную окружения REACT_APP_API_BASE_URL
 
+---------- .env ----------
 REACT_APP_API_BASE_URL=http://95.163.221.31/api
-
-# После установки REACT_APP_API_BASE_URL выходим из .env
+---------- .env ----------
 
 nano package.json
-# Меняем прокси из package.json на прокси бэкенда из другого сервера 
 
+---------- package.json ----------
 {
   "name": "mycloud-frontend",
   "version": "1.0.0",
   "private": true,
   ...
-  "proxy": "http://95.163.221.31", # Устанавливаем прокси на бэкенд
+  "proxy": "http://95.163.221.31", # установка прокси на бэкенд
   "devDependencies": {
     "react-dropzone": "^14.3.8",
     "react-icons": "^5.5.0"
   }
 }
-
-# После установки proxy выходим из package.json
+---------- package.json ----------
 
 npm install
 npm run build
@@ -544,14 +538,14 @@ npm run build
 
 ![](./assets/motions/4-frontend-deploy/4-4.gif)
 
-### 3.5. Настраиваем Nginx для фронтенда
+### 3.5. Настройка Nginx для фронтенда
 
-- Проделываем следующее:
+- Командная строка:
 
 ```
 sudo nano /etc/nginx/sites-available/mycloud-frontend
-# Заполняем серверные настройки
 
+------- sites-available/mycloud-frontend -------
 server {
     listen 80;
     server_name 95.163.220.194;
@@ -571,37 +565,35 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
-
-# После заполнения закрываем /etc/nginx/sites-available/mycloud-frontend
+------- sites-available/mycloud-frontend -------
 
 sudo ln -s /etc/nginx/sites-available/mycloud-frontend /etc/nginx/sites-enabled
 sudo nginx -t
+
 sudo systemctl restart nginx
 ```
 
 ![](./assets/motions/4-frontend-deploy/4-5.gif)
 
-### 3.6. Проверяем наличие веб-приложения
+### 3.6. Проверка наличия веб-приложения
 
-- Открываем ссылку http://95.163.220.194/. Смотрим на результат.
-
-![](./assets/motions/4-frontend-deploy/4-6.gif)
+- Задеплоенное приложение (Reg.ru): [http://95.163.220.194](http://95.163.220.194)
 
 ## 4. Работа с веб-приложением после запуска
 
 ### 4.1. Регистрация и вход в приложение
 
-- Выбираем раздел "Регистрация" и регистрируемся. После регистрации пользователя перебросит в хранилище файлов
-- Для входа по логину и паролю используем раздел "Вход"
-- Данные по пользователям и админам фиксируются в таблице accounts_customuser из БД
+- Выбор раздела "Регистрация" и регистрация. После регистрации пользователя перебросит в хранилище
+- Вход по логину и паролю через раздел "Вход"
+- accounts_customuser - таблица из БД, фиксирующая пользователей и админов
 
 ![](./assets/motions/5-app-usage/5-1.gif)
 
 ### 4.2. Работа с хранилищем
 
-- Перетаскиваем файл в нужную область в стиле Drag and Drop или просто выбираем файл по кнопке "Выбрать файл"
-- Далее пишем комментарий к файлу, если необходим, и нажимаем "Загрузить файл". Комментарий можно редактировать
-- При желании можно скачать, передать по ссылке и удалить файл из хранилища пользователя
+- Перетаскивание файлов в область (Drag and Drop) или выбор файла (кнопка "Выбрать файл")
+- Написание комментария к файлу (необязательно) и загрузка файла в хранилище пользователя. Комментарий можно редактировать
+- Скачивание файла, его передача по ссылке и удаление из хранилища пользователя
 - Стандартный максимальный размер хранилища для админов и пользователей задается в settings.py (раздел "Storage Quotas"). При возникновении должной потребности админ может увеличить/уменьшить размер хранилища для конкретного пользователя
 
 ![](./assets/motions/5-app-usage/5-2.gif)
@@ -613,11 +605,11 @@ sudo systemctl restart nginx
 
 ![](./assets/motions/5-app-usage/5-3.gif)
 
-## 5. Настройка автодеплоя проекта: фронтенд
+## 5. Настройка автодеплоя проекта: frontend
 
-### 5.1. Создаем необходимые файлы. Запускаем webhook для фронтенда
+### 5.1. Создание необходимых файлов. Запуск webhook для frontend
 
-- Выполняем следующее:
+- Командная строка:
 
 ```
 sudo apt install python3-flask -y
@@ -625,7 +617,6 @@ sudo apt install expect -y
 sudo chmod u+x /usr/sbin/nginx
 
 nano /home/my_user/update_frontend.sh
-# Заполняем файл update_frontend.sh
 
 -------- update_frontend.sh --------
 #!/bin/bash
@@ -639,14 +630,12 @@ git pull origin main
 npm install
 npm run build
 -------- update_frontend.sh --------
-```
 
-```
 chmod +x /home/my_user/update_frontend.sh
-# После заполнения закрываем update_frontend.sh и настраиваем права
+```
 
+```
 nano /home/my_user/update_frontend.exp
-# Заполняем файл update_frontend.exp (user - пароль пользователя сервера)
 
 -------- update_frontend.exp --------
 #!/usr/bin/expect -f
@@ -661,14 +650,12 @@ expect "password" {
 
 expect eof
 -------- update_frontend.exp --------
-```
 
-```
 chmod +x /home/my_user/update_frontend.exp
-# После заполнения закрываем update_frontend.exp и настраиваем права
+```
 
+```
 nano /home/my_user/webhook_frontend.py
-# Заполняем файл webhook_frontend.py
 
 -------- webhook_frontend.py --------
 from flask import Flask, request
@@ -690,7 +677,6 @@ if __name__ == '__main__':
 
 ```
 sudo nano /etc/systemd/system/webhook_frontend.service
-# После заполнения закрываем webhook_frontend.py и настраиваем systemd для webhook
 
 -------- webhook_frontend.service --------
 [Unit]
@@ -709,8 +695,6 @@ WantedBy=multi-user.target
 ```
 
 ```
-# После заполнения закрываем webhook_frontend.service и запускаем webhook_frontend
-
 sudo systemctl daemon-reload
 sudo systemctl start webhook_frontend
 sudo systemctl enable webhook_frontend
@@ -721,13 +705,13 @@ journalctl -u webhook_frontend -f --no-pager
 
 ![](./assets/motions/6-frontend-auto-deploy/6-1.gif)
 
-### 5.2. Привязываем webhook к репозиторию GitHub с фронтендом
+### 5.2. Привязка webhook к репозиторию GitHub с frontend
 
-- Заходим в репозиторий с фронтендом
+- Вход в репозиторий с frontend
 
-- Settings > Webhooks. Нажимаем на кнопку "Add webhook" для привязки webhook к GitHub-репозиторию
+- Settings > Webhooks. Нажатие на кнопку "Add webhook" для привязки webhook к GitHub-репозиторию
 
-- Заполняем данные по Webhook:
+- Заполнение данных по Webhook:
 ```
 Payload URL: http://95.163.220.194:5001/webhook
 Content type: application/json
@@ -737,25 +721,22 @@ Which events would you like to trigger this webhook?: Just the push event
 Active: да
 ```
 
-- После заполнения сохраняем webhook
+- Сохранение webhook
 
 ![](./assets/motions/6-frontend-auto-deploy/6-2.gif)
 
-### 5.3. Проверка автодеплоя фронтенда
+### 5.3. Проверка автодеплоя frontend
 
-- Делаем тестовый пуш в репозиторий с фронтендом
-
-- Проверяем изменения на сайте http://95.163.220.194/ после пуша последних доработок
-
-- Изменения появятся через некоторое время
+- Проверка изменения/изменений на сайте [http://95.163.220.194](http://95.163.220.194) после пуша последних доработок в репозиторий с frontend
+- Результат проявится через некоторое время
 
 ![](./assets/motions/6-frontend-auto-deploy/6-3.gif)
 
-## 6. Настройка автодеплоя проекта: бэкенд
+## 6. Настройка автодеплоя проекта: backend
 
-### 6.1. Создаем необходимые файлы. Запускаем webhook для бэкенда
+### 6.1. Создание необходимых файлов. Запуск webhook для backend
 
-- Выполняем следующее:
+- Командная строка:
 
 ```
 sudo apt install python3-flask -y
@@ -763,7 +744,6 @@ sudo apt install expect -y
 sudo chmod u+x /usr/sbin/nginx
 
 nano /home/my_user/update_backend.sh
-# Заполняем файл update_backend.sh
 
 -------- update_backend.sh --------
 #!/bin/bash
@@ -788,14 +768,12 @@ sudo systemctl daemon-reload
 sudo systemctl restart gunicorn
 sudo systemctl restart nginx
 -------- update_backend.sh --------
-```
 
-```
 chmod +x /home/my_user/update_backend.sh
-# После заполнения закрываем update_backend.sh и настраиваем права
+```
 
+```
 nano /home/my_user/update_backend.exp
-# Заполняем файл update_backend.exp (user - пароль пользователя сервера)
 
 -------- update_backend.exp --------
 #!/usr/bin/expect -f
@@ -810,14 +788,12 @@ expect "password" {
 
 expect eof
 -------- update_backend.exp --------
-```
 
-```
 chmod +x /home/my_user/update_backend.exp
-# После заполнения закрываем update_backend.exp и настраиваем права
+```
 
+```
 nano /home/my_user/webhook_backend.py
-# Заполняем файл webhook_backend.py
 
 -------- webhook_backend.py --------
 from flask import Flask, request
@@ -839,7 +815,6 @@ if __name__ == '__main__':
 
 ```
 sudo nano /etc/systemd/system/webhook_backend.service
-# После заполнения закрываем webhook_backend.py и настраиваем systemd для webhook
 
 -------- webhook_backend.service --------
 [Unit]
@@ -858,8 +833,6 @@ WantedBy=multi-user.target
 ```
 
 ```
-# После заполнения закрываем webhook_frontend.service и запускаем webhook_backend
-
 sudo systemctl daemon-reload
 sudo systemctl start webhook_backend
 sudo systemctl enable webhook_backend
@@ -870,13 +843,13 @@ journalctl -u webhook_backend -f --no-pager
 
 ![](./assets/motions/7-backend-auto-deploy/7-1.gif)
 
-### 6.2. Привязываем webhook к репозиторию GitHub с бекэндом
+### 6.2. Привязка webhook к репозиторию GitHub с backend
 
-- Заходим в репозиторий с бекэндом
+- Вход в GitHub-репозиторий с backend
 
-- Settings > Webhooks. Нажимаем на кнопку "Add webhook" для привязки webhook к GitHub-репозиторию
+- Settings > Webhooks. Нажатие на кнопку "Add webhook" для привязки webhook к репозиторию
 
-- Заполняем данные по Webhook:
+- Заполнение данных по Webhook:
 ```
 Payload URL: http://95.163.221.31:5000/webhook
 Content type: application/json
@@ -886,16 +859,13 @@ Which events would you like to trigger this webhook?: Just the push event
 Active: да
 ```
 
-- После заполнения сохраняем webhook
+- Сохранение webhook после заполнения
 
 ![](./assets/motions/7-backend-auto-deploy/7-2.gif)
 
-### 6.3. Проверка автодеплоя бэкенда
+### 6.3. Проверка автодеплоя backend
 
-- Делаем тестовый пуш в репозиторий с бекэндом
-
-- Проверяем изменения на сервере с IP-адресом 95.163.221.31 после пуша последних доработок
-
-- Изменения появятся через некоторое время
+- Проверка изменения/изменений в коде backend после пуша последних доработок в репозитории. К примеру, в файле settings.py
+- Результат проявится через некоторое время
 
 ![](./assets/motions/7-backend-auto-deploy/7-3.gif)
